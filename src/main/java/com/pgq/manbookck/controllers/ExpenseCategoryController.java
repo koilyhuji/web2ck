@@ -28,29 +28,8 @@ public class ExpenseCategoryController {
     @GetMapping
     public String listCategories(Model model) {
         model.addAttribute("categories", categoryService.findAll());
-        model.addAttribute("pageTitle", "Expense Categories");
+        model.addAttribute("pageTitle", "Danh mục chi tiêu");
         return "categories/list"; // -> src/main/resources/templates/categories/list.html
-    }
-
-    @GetMapping("/add")
-    public String showAddCategoryForm(Model model) {
-        model.addAttribute("category", new ExpenseCategory());
-        model.addAttribute("pageTitle", "Add New Category");
-        return "categories/form"; // -> src/main/resources/templates/categories/form.html
-    }
-
-    @GetMapping("/edit/{id}")
-    public String showEditCategoryForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
-        return categoryService.findById(id)
-                .map(category -> {
-                    model.addAttribute("category", category);
-                    model.addAttribute("pageTitle", "Edit Category: " + category.getName());
-                    return "categories/form";
-                })
-                .orElseGet(() -> {
-                    redirectAttributes.addFlashAttribute("errorMessage", "Category not found with ID: " + id);
-                    return "redirect:/categories";
-                });
     }
 
     @PostMapping("/save")
@@ -63,8 +42,7 @@ public class ExpenseCategoryController {
         try {
             categoryService.save(category);
             redirectAttributes.addFlashAttribute("successMessage", "Category saved successfully!");
-        } catch (Exception e) { // Catch potential unique constraint violations or other DB errors
-            // A more specific exception handling would be better in a real app
+        } catch (Exception e) { 
             redirectAttributes.addFlashAttribute("errorMessage", "Error saving category: " + e.getMessage());
             // Optionally, redirect back to form with existing data if it's a non-validation DB error
              model.addAttribute("pageTitle", category.getId() == null ? "Add New Category" : "Edit Category");
