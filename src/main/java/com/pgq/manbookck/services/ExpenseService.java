@@ -1,10 +1,12 @@
 package com.pgq.manbookck.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.pgq.manbookck.models.Expense;
 import com.pgq.manbookck.repositories.ExpenseRepository;
@@ -38,4 +40,10 @@ public class ExpenseService {
     public void deleteById(Long id) {
         expenseRepository.deleteById(id);
     }
+    @Transactional
+    public List<Expense> findFilteredExpenses(String searchTerm, Long categoryId, LocalDate dateFrom, LocalDate dateTo) {
+        String effectiveSearchTerm = StringUtils.hasText(searchTerm) ? searchTerm : null;
+        return expenseRepository.findWithFilters(effectiveSearchTerm, categoryId, dateFrom, dateTo);
+    }
+
 }
