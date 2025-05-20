@@ -1,10 +1,13 @@
     package com.pgq.manbookck.controllers;
 
-    import java.util.List;
+    import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
     import java.util.stream.Collectors;
 
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.stereotype.Controller;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.validation.BindingResult;
     import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,8 @@
     import org.springframework.web.bind.annotation.PathVariable;
     import org.springframework.web.bind.annotation.PostMapping;
     import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
     import com.pgq.manbookck.models.Expense;
     import com.pgq.manbookck.services.CurrencyFormatterService;
@@ -33,8 +37,6 @@
             this.currencyFormatterUtil = currencyFormatterService;
         }
 
-        // Helper DTO for display purposes to include formatted amount
-        // You can place this in a separate 'dto' package
         public class ExpenseDisplayDTO {
             public Long id;
             public String description;
@@ -42,6 +44,8 @@
             public String expenseDate;
             public String categoryName;
             public String createdAt;
+            public BigDecimal amount;
+            public Long categoryId;
 
             public ExpenseDisplayDTO(Expense expense) {
                 this.id = expense.getId();
@@ -50,18 +54,53 @@
                 this.expenseDate = expense.getExpenseDate().toString(); // Or format as needed
                 this.categoryName = expense.getCategory() != null ? expense.getCategory().getName() : "N/A";
                 this.createdAt = expense.getCreatedAt().toLocalDate().toString(); // Or format
+                this.amount = expense.getAmount();
+                this.categoryId = expense.getCategory().getId();
             }
         }
 
 
         @GetMapping
-        public String listExpenses(Model model) {
-            List<Expense> expenses = expenseService.findAll();
+        public String listExpenses( Model model,
+                                    @RequestParam(name = "search", required = false) String search,
+                                    @RequestParam(name = "categoryId", required = false) Long categoryId,
+                                    @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                                    @RequestParam(name = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+                                    @RequestParam(name = "quickFilterRange", required = false) String quickFilterRange) {
+            
+            List<Expense> expenses = expenseService.findFilteredExpenses(search,categoryId,dateFrom,dateTo);
             List<ExpenseDisplayDTO> expenseDTOs = expenses.stream()
                                                         .map(ExpenseDisplayDTO::new)
                                                         .collect(Collectors.toList());
+
+            String pageTitle = "Chi tiêu"; 
+            if (quickFilterRange != null) {
+                switch (quickFilterRange) {
+                    case "today":
+                        pageTitle = "Chi tiêu hôm nay";
+                        break;
+                    case "yesterday":
+                        pageTitle = "Chi tiêu hôm qua";
+                        break;
+                    case "last7days":
+                        pageTitle = "Chi tiêu 7 ngày qua";
+                        break;
+                    case "thisMonth":
+                        pageTitle = "Chi tiêu tháng này";
+                        break;
+                    default:
+                        pageTitle = "Chi tiêu"; // Fallback
+                }
+            }
             model.addAttribute("expenses", expenseDTOs);
-            model.addAttribute("pageTitle", "All Expenses");
+            model.addAttribute("pageTitle", pageTitle);
+            model.addAttribute("quickFilterRange", quickFilterRange);
+        // Pass filter parameters back to the view
+            model.addAttribute("currentSearch", search);
+            model.addAttribute("currentCategoryId", categoryId);
+            model.addAttribute("currentDateFrom", dateFrom);
+            model.addAttribute("currentDateTo", dateTo);
+            populateCategoryDropdown(model);
             return "expenses/list"; // -> src/main/resources/templates/expenses/list.html
         }
 
@@ -69,28 +108,7 @@
             model.addAttribute("allCategories", categoryService.findAll());
         }
 
-        @GetMapping("/add")
-        public String showAddExpenseForm(Model model) {
-            model.addAttribute("expense", new Expense());
-            populateCategoryDropdown(model);
-            model.addAttribute("pageTitle", "Add New Expense");
-            return "expenses/form"; // -> src/main/resources/templates/expenses/form.html
-        }
-
-        @GetMapping("/edit/{id}")
-        public String showEditExpenseForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
-            return expenseService.findById(id)
-                    .map(expense -> {
-                        model.addAttribute("expense", expense);
-                        populateCategoryDropdown(model);
-                        model.addAttribute("pageTitle", "Edit Expense");
-                        return "expenses/form";
-                    })
-                    .orElseGet(() -> {
-                        redirectAttributes.addFlashAttribute("errorMessage", "Expense not found with ID: " + id);
-                        return "redirect:/expenses";
-                    });
-        }
+       
 
         @PostMapping("/save")
         public String saveExpense(@ModelAttribute("expense") Expense expense,
