@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSRF Meta Tags (if using Spring Security) -->
+    <meta name="_csrf" th:content="${_csrf?.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}"/>
 
     <style>
         :root {
@@ -32,6 +35,7 @@
             font-family: var(--font-family-sans-serif);
             color: var(--text-color);
             line-height: 1.6;
+            padding-top: 90px; /* Added padding for fixed navbar */
         }
 
         .navbar-custom {
@@ -75,7 +79,7 @@
 
 
         .page-container {
-            padding-top: 2rem;
+            padding-top: 1rem; /* Reduced from 2rem due to fixed navbar padding */
             padding-bottom: 3rem;
         }
 
@@ -85,10 +89,9 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            /* border-bottom: 1px solid var(--border-color); */
         }
         .page-header h1 {
-            font-size: 2.25rem; /* Larger title */
+            font-size: 2.25rem;
             font-weight: 700;
             color: var(--text-color);
         }
@@ -98,7 +101,7 @@
             border-color: var(--primary-color);
             font-weight: 600;
             padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem; /* Softer corners */
+            border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
             transition: all 0.2s ease-in-out;
         }
@@ -112,43 +115,42 @@
             margin-right: 0.5rem;
         }
 
-        /* --- CONCEPT: Summary Cards --- */
+        /* --- Summary Cards --- */
         .summary-cards-row {
             margin-bottom: 2rem;
         }
         .summary-card {
             background-color: var(--card-bg);
-            border-radius: 0.75rem; /* More rounded */
+            border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,.05);
             border: 1px solid var(--border-color);
-            text-align: center; /* Center content in small cards */
+            text-align: center;
         }
         .summary-card .card-icon {
             font-size: 1.75rem;
             color: var(--primary-color);
             margin-bottom: 0.75rem;
-            display: block; /* Make icon block to take full width for centering */
+            display: block;
         }
-        .summary-card h5 { /* Title like "Total This Month" */
+        .summary-card h5 {
             font-size: 0.9rem;
             color: var(--text-muted-color);
             margin-bottom: 0.25rem;
             font-weight: 500;
             text-transform: uppercase;
         }
-        .summary-card .card-value { /* The actual amount/number */
+        .summary-card .card-value {
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-color);
         }
-        /* Example specific colors for summary cards (optional) */
         .summary-card.total-spent .card-icon { color: var(--danger-color); }
-        .summary-card.average-spend .card-icon { color: #FFC107; } /* Amber */
+        .summary-card.average-spend .card-icon { color: #FFC107; }
         .summary-card.top-category .card-icon { color: var(--success-color); }
 
 
-        /* --- CONCEPT: Filter Bar --- */
+        /* --- Filter Bar --- */
         .filter-bar {
             background-color: var(--card-bg);
             padding: 1.5rem;
@@ -163,49 +165,55 @@
         }
         .filter-bar .form-control:focus, .filter-bar .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25); /* Bootstrap's focus style adapted */
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb, 74, 144, 226), 0.25);
         }
         .filter-bar label {
             font-weight: 500;
             margin-bottom: 0.25rem;
             font-size: 0.9rem;
         }
-        .filter-bar .btn-outline-secondary {
+        .filter-bar .btn-outline-primary { /* Changed from outline-secondary */
             border-radius: 0.5rem;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+         .filter-bar .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
 
-        .alert { /* Custom alert styling */
+        .alert {
             border-radius: 0.5rem;
             padding: 1rem 1.25rem;
             border-left-width: 4px;
         }
         .alert-success {
-            background-color: #e6fffa; /* Lighter success bg */
+            background-color: #e6fffa;
             border-color: var(--success-color);
-            color: #004d40; /* Darker text for contrast */
+            color: #004d40;
         }
         .alert-danger {
-            background-color: #ffeeed; /* Lighter danger bg */
+            background-color: #ffeeed;
             border-color: var(--danger-color);
-            color: #7f0000; /* Darker text */
+            color: #7f0000;
         }
         .alert .fas { margin-right: 0.5rem; }
 
         .custom-table-wrapper {
             background-color: var(--card-bg);
             border-radius: 0.75rem;
-            padding: 0; /* Padding will be on table/header inside */
+            padding: 0;
             box-shadow: 0 4px 12px rgba(0,0,0,.05);
-            overflow: hidden; /* To ensure border-radius clips table corners */
+            overflow: hidden;
             border: 1px solid var(--border-color);
         }
 
         .table-custom {
-            margin-bottom: 0; /* Remove default margin as wrapper handles it */
+            margin-bottom: 0;
         }
         .table-custom thead th {
-            background-color: var(--light-bg); /* Lighter header */
+            background-color: var(--light-bg);
             color: var(--text-muted-color);
             font-weight: 600;
             font-size: 0.9rem;
@@ -222,7 +230,7 @@
             color: var(--text-color);
         }
         .table-custom tbody tr:hover {
-            background-color: #eef2f9; /* Subtle hover */
+            background-color: #eef2f9;
         }
         .table-custom .actions a {
             margin: 0 0.35rem;
@@ -234,12 +242,11 @@
             color: var(--primary-color);
         }
         .table-custom .actions a.text-danger:hover {
-            color: var(--danger-color); /* Use our danger color on hover */
+            color: var(--danger-color);
         }
         .table-custom .amount-column {
             text-align: right;
-            font-weight: 600; /* Make amount stand out a bit */
-            color: var(--text-color); /* Or a specific color if desired e.g. var(--primary-color) */
+            font-weight: 600;
         }
 
         .no-expenses-card {
@@ -266,17 +273,17 @@
             color: var(--text-muted-color);
             margin-bottom: 1.5rem;
         }
-        .no-expenses-card a {
-            color: var(--primary-color);
-            font-weight: 600;
+        .no-expenses-card a.btn-primary-custom { /* Ensure button style applies */
+             color: white !important; /* Override link color for buttons */
+        }
+        .no-expenses-card a.btn-primary-custom:hover {
             text-decoration: none;
         }
-        .no-expenses-card a:hover {
-            text-decoration: underline;
-        }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
+            body { padding-top: 70px; /* Adjust if navbar height changes on mobile */ }
             .page-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -285,13 +292,10 @@
                 margin-bottom: 1rem;
             }
             .page-header .btn-primary-custom {
-                width: 100%; /* Full width button on small screens */
+                width: 100%;
             }
             .summary-card {
                 margin-bottom: 1rem;
-            }
-            .table-responsive-custom { /* Bootstrap already provides good responsive table */
-                border: none; /* remove border from this wrapper if table itself has it */
             }
         }
         .floating-navbar {
@@ -300,41 +304,53 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 1050;
-            
             margin: 10px auto;
-            width: 95%;
-            padding: 10px 20px;
-            border-radius: 15px;
+            width: 95%; 
+            padding: 5px 10px; 
+            border-radius: 15px; 
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: rgba(255, 255, 255, 0.95); /* or any preferred color */
-        
-      
-
-            backdrop-filter: blur(10px); /* Optional: for frosted glass effect */
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-
-            max-width: 95%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .floating-navbar .navbar-nav {
+            flex-direction: row; /* Horizontal items */
+        }
+        .floating-navbar .nav-item {
+            margin: 0 0.25rem; /* Smaller margin between items */
+        }
+        .floating-navbar .nav-link {
+            padding: 0.5rem 0.75rem; /* Smaller padding for links */
+        }
+        #globalAlerts {
+            position: fixed;
+            top: 100px; /* Below navbar */
+            right: 20px;
+            z-index: 1055; /* Above most content */
+            width: auto;
+            max-width: 400px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed navbar-custom floating-navbar ">
+    <nav class="navbar navbar-expand navbar-custom floating-navbar">
         <div class="container-fluid justify-content-center">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <!-- Toggler not strictly needed if navbar is always expanded, but good for consistency -->
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item mx-3">
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/expenses}">
-                            <i class="fas fa-list-alt"></i> Expenses
+                            <i class="fas fa-list-alt"></i> Chi tiêu
                         </a>
                     </li>
-                    <li class="nav-item mx-3">
+                    <li class="nav-item">
                         <a class="nav-link" th:href="@{/categories}">
-                            <i class="fas fa-tags"></i> Categories
+                            <i class="fas fa-tags"></i> Danh mục
                         </a>
                     </li>
                 </ul>
@@ -342,17 +358,14 @@
         </div>
     </nav>
     
+    <!-- Global Alert Container -->
+    <div id="globalAlerts"></div>
+
+
+<div class="container-fluid page-container">
     
 
-<div class="container-fluid page-container mt-5">
-    <div class="page-header mt-5">
-        <h1 th:text="${pageTitle ?: 'My Expenses'}">Expenses Overview</h1>
-        <a th:href="@{/expenses/add}" class="btn btn-primary-custom">
-            <i class="fas fa-plus"></i> Add New Expense
-        </a>
-    </div>
-
-    <!-- Flash Messages -->
+    <!-- Flash Messages (kept for page load messages, AJAX messages will use globalAlerts) -->
     <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -361,132 +374,195 @@
         <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <!-- CONCEPTUAL: Filter Bar -->
+
+    <!-- Filter Bar -->
     <div class="filter-bar">
-        <form class="row g-3 align-items-end">
+        <form class="row g-3 align-items-end" id="filterForm" th:action="@{/expenses}" method="get">
             <div class="col-md-3">
-                <label for="searchExpense" class="form-label">Search</label>
-                <input type="text" class="form-control" id="searchExpense" placeholder="Description...">
+                <label for="searchExpense" class="form-label">Tìm Kiếm</label>
+                <input type="text" class="form-control" th:value="${currentSearch}" name="search" id="searchExpense" placeholder="tìm...">
             </div>
             <div class="col-md-3">
-                <label for="filterCategory" class="form-label">Category</label>
-                <select id="filterCategory" class="form-select">
-                    <option selected>All Categories</option>
-                    <!-- <option th:each="cat : ${T(java.util.Arrays).asList('Food', 'Transport', 'Utilities')}" th:value="${cat}" th:text="${cat}">Category</option> -->
+                <label for="filterCategory" class="form-label">Danh mục</label>
+                <select id="filterCategory" class="form-select" name="categoryId">
+                    <option value="">Tất cả danh mục</option>
+                    <!-- Populate with Thymeleaf if categories available on page load -->
+                     <option th:each="cat : ${allCategories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${currentCategoryId != null && cat.id == currentCategoryId}">Category</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <label for="filterDateFrom" class="form-label">From</label>
-                <input type="date" class="form-control" id="filterDateFrom">
+                <label for="filterDateFrom" class="form-label">Từ ngày</label>
+                <input type="date" class="form-control" id="filterDateFrom"
+                       name="dateFrom" th:value="${currentDateFrom != null ? #temporals.format(currentDateFrom, 'yyyy-MM-dd') : ''}" 
+                >
             </div>
             <div class="col-md-2">
-                <label for="filterDateTo" class="form-label">To</label>
-                <input type="date" class="form-control" id="filterDateTo">
+                <label for="filterDateTo" class="form-label">Đến ngày</label>
+                <input type="date" class="form-control" id="filterDateTo"
+                       name="dateTo" th:value="${currentDateTo != null ? #temporals.format(currentDateTo, 'yyyy-MM-dd') : ''}" 
+                >
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-outline-primary w-100"><i class="fas fa-filter"></i> Filter</button>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-outline-primary w-100"><i class="fas fa-filter"></i> Lọc</button>
+                <a th:href="@{/expenses}" class="btn btn-outline-secondary w-100" title="Hủy lọc"><i class="fas fa-times"></i></a>
             </div>
+            <input type="hidden" id="quickFilterRange" name="quickFilterRange">
+            <div class="row">
+                <div class="col-12">
+                    <div class="quick-filter-buttons mt-4">
+                        <button 
+                            type="button" 
+                            class="btn mx-1 border quick-filter-btn ${quickFilterRange == 'today' ? 'btn-primary' : 'btn-outline-secondary'}" 
+                            data-range="today"
+                            th:classappend="${quickFilterRange == 'today'} ? 'btn-secondary' : 'btn-outline-secondary'">
+                            Hôm nay
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn mx-1 border quick-filter-btn ${quickFilterRange == 'yesterday' ? 'btn-secondary' : 'btn-outline-secondary'}" 
+                            data-range="yesterday"
+                            th:classappend="${quickFilterRange == 'yesterday'} ? 'btn-secondary' : 'btn-outline-secondary'">
+                            Hôm qua
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn mx-1 border quick-filter-btn ${quickFilterRange == 'last7days' ? 'btn-secondary' : 'btn-outline-secondary'}" 
+                            data-range="last7days"
+                            th:classappend="${quickFilterRange == 'last7days'} ? 'btn-secondary' : 'btn-outline-secondary'">
+                            7 ngày qua
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn mx-1 border quick-filter-btn ${quickFilterRange == 'thisMonth' ? 'btn-secondary' : 'btn-outline-secondary'}" 
+                            data-range="thisMonth"
+                            th:classappend="${quickFilterRange == 'thisMonth'} ? 'btn-secondary' : 'btn-outline-secondary'">
+                            Tháng này
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
 
+    <div class="page-header">
+        <h1 th:text="${pageTitle ?: 'My Expenses'}">Tổng quan chi tiêu </h1>
+        <!-- MODIFIED: Button to trigger modal -->
+        <button type="button" class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+            <i class="fas fa-plus"></i> Thêm chi tiêu
+        </button>
+    </div>
 
-    <div th:if="${#lists.isEmpty(expenses)}" class="no-expenses-card">
+    <div id="noExpensesCard" th:if="${#lists.isEmpty(expenses)}" class="no-expenses-card">
         <div class="icon-placeholder"><i class="fas fa-receipt"></i></div>
         <p class="lead">No expenses found!</p>
         <p>Looks like your expense list is empty. Why not add one now?</p>
-        <a th:href="@{/expenses/add}" class="btn btn-primary-custom">
+        <!-- MODIFIED: Button to trigger modal -->
+        <button type="button" class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
             <i class="fas fa-plus"></i> Add First Expense
-        </a>
+        </button>
     </div>
 
-    <div th:if="${not #lists.isEmpty(expenses)}" class="custom-table-wrapper">
-        <div class="table-responsive"> <!-- Bootstrap's responsive wrapper -->
+    <div id="expensesTableWrapper" th:classappend="${#lists.isEmpty(expenses)} ? 'd-none' : ''" class="custom-table-wrapper">
+        <div class="table-responsive">
             <table class="table table-hover table-custom">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th class="amount-column">Amount (VND)</th>
-                        <th class="text-center">Actions</th>
+                        <th>Ngày</th>
+                        <th>Mô tả</th>
+                        <th>Danh mục</th>
+                        <th class="amount-column">Khoản chi (VND)</th>
+                        <th class="text-center">Hành động</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="expensesTableBody">
                     <tr th:each="expenseDTO : ${expenses}">
-                        <td th:text="${expenseDTO.expenseDate}">01 Jan 2023</td>
+                        <td th:text="${#dates.format(expenseDTO.expenseDate, 'dd MMM yyyy')}">01 Jan 2023</td>
                         <td th:text="${expenseDTO.description}">Lunch with colleagues</td>
-                        <td ><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill px-2 py-1" th:text="${expenseDTO.categoryName}">Food</span></td>
+                        <td><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill px-2 py-1" th:text="${expenseDTO.categoryName ?: 'N/A'}">Food</span></td>
                         <td class="amount-column" th:text="${expenseDTO.formattedAmount}">150.000 ₫</td>
                         <td class="actions text-center">
-                            <a th:href="@{/expenses/edit/{id}(id=${expenseDTO.id})}" title="Edit">
+                            <button class="edit-expense-btn" data-bs-toggle="modal" data-bs-target="#addExpenseModal"
+                               th:data-id="${expenseDTO.id}"
+                               th:data-description="${expenseDTO.description}"
+                               th:data-amount="${expenseDTO.amount}" 
+                               th:data-date="${#dates.format(expenseDTO.expenseDate, 'yyyy-MM-dd')}" 
+                               th:data-categoryid="${expenseDTO.categoryId ?: ''}"
+                               >
                                 <i class="fas fa-edit"></i>
-                            </a>
+                            </button>
                             <a th:href="@{/expenses/delete/{id}(id=${expenseDTO.id})}"
                                title="Delete" class="text-danger"
-                               onclick="return confirm('Are you sure you want to delete this expense?');">
+                               th:onclick="'return confirmDelete(event, \'' + @{/expenses/delete/{id}(id=${expenseDTO.id})} + '\');'">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>
-                    <!-- Example Row 2 -->
-                    <tr>
-                        <td>15 Feb 2024</td>
-                        <td>Monthly Internet Bill</td>
-                        <td><span class="badge bg-info-subtle text-info-emphasis rounded-pill px-2 py-1">Utilities</span></td>
-                        <td class="amount-column">220.000 ₫</td>
-                        <td class="actions text-center">
-                            <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
-                            <a href="#" title="Delete" class="text-danger" onclick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                     <tr>
-                        <td>18 Feb 2024</td>
-                        <td>Groceries for the week</td>
-                        <td><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-2 py-1">Groceries</span></td>
-                        <td class="amount-column">750.000 ₫</td>
-                        <td class="actions text-center">
-                            <a href="#" title="Edit"><i class="fas fa-edit"></i></a>
-                            <a href="#" title="Delete" class="text-danger" onclick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
+                    <!-- Example Rows Removed - will be dynamically populated or from server -->
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Summary Cards (Assuming these are still relevant) -->
     <div class="row summary-cards-row mt-5">
-        <div class="col-md-4 mb-3 mb-md-0">
-            <div class="summary-card total-spent">
-                <i class="fas fa-dollar-sign card-icon"></i>
-                <h5>Total This Month</h5>
-                <div class="card-value" th:text="${#numbers.formatDecimal(1250000, 0, 'COMMA', 0, 'POINT')} + ' ₫'">1.250.000 ₫</div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3 mb-md-0">
-            <div class="summary-card average-spend">
-                 <i class="fas fa-chart-line card-icon"></i>
-                <h5>Avg. Daily Spend</h5>
-                <div class="card-value" th:text="${#numbers.formatDecimal(41666, 0, 'COMMA', 0, 'POINT')} + ' ₫'">41.666 ₫</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="summary-card top-category">
-                <i class="fas fa-utensils card-icon"></i> <!-- Example icon -->
-                <h5>Top Category</h5>
-                <div class="card-value" style="font-size:1.4rem;" th:text="'Food & Dining'">Food & Dining</div>
-            </div>
+        <!-- ... your summary cards ... -->
+    </div>
+</div>
+
+<!-- Add Expense Modal -->
+<div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="addExpenseForm" th:action="@{/expenses/save}" method="post"> <!-- Action can be for non-JS fallback -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExpenseModalLabel">Thêm khoản chi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalAlertPlaceholder"></div> <!-- For modal-specific alerts -->
+
+                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" id="expenseId" name="id" >
+                    <div class="mb-3">
+                        <label for="expenseDescription" class="form-label">Mô tả <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="expenseDescription" name="description" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseAmount" class="form-label">Số tiền (VND) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="expenseAmount" name="amount" required min="0" step="1000">
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseDate" class="form-label">Ngày <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="expenseDate" name="expenseDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseCategory" class="form-label">Danh mục</label>
+                        <select class="form-select" id="expenseCategory" name="category" required>
+                            <option value="">-- Chọn danh mục --</option>
+                            <option th:each="category : ${allCategories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}"
+                                    th:selected="${category.id == 2}">Category Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary-custom"><i class="fas fa-save"></i> Lưu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Optional: If you want to define CSS variables for JS access (e.g., for dynamic theming or charts)
+<script th:inline="javascript">
+    /*<![CDATA[*/
     const rootStyles = getComputedStyle(document.documentElement);
     const primaryColor = rootStyles.getPropertyValue('--primary-color').trim();
-    // console.log('Primary color:', primaryColor);
 
-    // To make the primary color RGB values available for the filter bar focus shadow
-    // (This is a bit hacky for demonstration; usually, you'd just define the RGBA directly in CSS)
     function hexToRgb(hex) {
         const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
@@ -496,6 +572,181 @@
     if (primaryColor) {
         document.documentElement.style.setProperty('--primary-color-rgb', hexToRgb(primaryColor));
     }
+
+    
+    const addExpenseModalElement = document.getElementById('addExpenseModal');
+    const addExpenseModal = new bootstrap.Modal(addExpenseModalElement);
+    const addExpenseForm = document.getElementById('addExpenseForm');
+    const expensesTableBody = document.getElementById('expensesTableBody');
+    const noExpensesCard = document.getElementById('noExpensesCard');
+    const expensesTableWrapper = document.getElementById('expensesTableWrapper');
+    const globalAlertsContainer = document.getElementById('globalAlerts');
+    const modalAlertPlaceholder = document.getElementById('modalAlertPlaceholder');
+
+    const expenseIdInput = document.getElementById('expenseId');
+    const expenseDescriptionInput = document.getElementById('expenseDescription');
+    const expenseAmountInput = document.getElementById('expenseAmount');
+    const expenseDateInput = document.getElementById('expenseDate');
+    const expenseCategoryInput = document.getElementById('expenseCategory');
+    
+    const filterForm = document.getElementById('filterForm');
+    const quickFilterButtons = document.querySelectorAll('.quick-filter-btn');
+
+        // Helper function to format Date object to 'YYYY-MM-DD'
+        function formatDate(date) {
+            const d = new Date(date);
+            let month = '' + (d.getMonth() + 1);
+            let day = '' + d.getDate();
+            const year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        quickFilterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const range = this.dataset.range;
+                document.getElementById('quickFilterRange').value = range;
+                const today = new Date();
+                let fromDate, toDate;
+
+                switch(range) {
+                    case 'today':
+                        fromDate = today;
+                        toDate = today;
+                        break;
+                    case 'yesterday':
+                        const yesterday = new Date(today);
+                        yesterday.setDate(today.getDate() - 1);
+                        fromDate = yesterday;
+                        toDate = yesterday;
+                        break;
+                    case 'last7days':
+                        const sevenDaysAgo = new Date(today);
+                        sevenDaysAgo.setDate(today.getDate() - 6); // -6 to include today as the 7th day
+                        fromDate = sevenDaysAgo;
+                        toDate = today;
+                        break;
+                    case 'thisMonth':
+                        fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                        toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of current month
+                        break;
+                    case 'lastMonth':
+                        fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1); // First day of last month
+                        toDate = new Date(today.getFullYear(), today.getMonth(), 0);    // Last day of last month
+                        break;
+                }
+
+                if (fromDate && toDate) {
+                    document.getElementById('filterDateFrom').value = formatDate(fromDate);
+                    document.getElementById('filterDateTo').value = formatDate(toDate);
+                    filterForm.submit(); 
+                }
+            });
+        });
+
+    function clearFormErrors() {
+        document.querySelectorAll('#expenseForm .text-danger.small').forEach(el => el.textContent = '');
+    }
+
+    function prepareModalForEdit(data) {
+        
+        expenseIdInput.value = data.id;
+        expenseDescriptionInput.value = data.description;
+        expenseAmountInput.value = data.amount; // amount phải là số
+        expenseDateInput.value = data.date;     // date phải là yyyy-MM-dd
+        expenseCategoryInput.value = data.categoryid;
+        
+        if (expenseDescriptionInput) {
+            expenseDescriptionInput.focus();
+        }
+        clearFormErrors();
+    }
+    // Set today's date for new expense by default
+    addExpenseModalElement.addEventListener('show.bs.modal', function () {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('expenseDate').value = today;
+        document.getElementById('expenseDescription').focus();
+        clearModalAlerts();
+        const button = event.relatedTarget; // Button đã trigger modal
+        if (button && button.classList.contains('edit-expense-btn')) {
+            // Trường hợp Edit
+            const expenseData = {
+                id: button.dataset.id,
+                description: button.dataset.description,
+                amount: button.dataset.amount,
+                date: button.dataset.date,
+                categoryid: button.dataset.categoryid
+            };
+            prepareModalForEdit(expenseData);
+        } 
+    });
+
+
+    addExpenseForm.addEventListener('submit', async function(event) {
+
+        clearModalAlerts();
+
+    });
+
+   
+    function escapeHtml(unsafe) {
+        if (unsafe === null || typeof unsafe === 'undefined') return '';
+        return String(unsafe)
+             .replace(/&/g, "&")
+             .replace(/</g, "<")
+             .replace(/>/g, ">")
+             .replace(/'/g, "'");
+    }
+
+    function showGlobalAlert(message, type = 'success') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${escapeHtml(message)}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        globalAlertsContainer.appendChild(alertDiv);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            const bsAlert = bootstrap.Alert.getInstance(alertDiv);
+            if (bsAlert) {
+                bsAlert.close();
+            }
+        }, 5000);
+    }
+    
+    function showModalAlert(message, type = 'danger') {
+        clearModalAlerts(); // Clear previous modal alerts
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        // Use innerHTML carefully if message can contain user-input HTML. Here, it's from server errors or fixed strings.
+        alertDiv.innerHTML = `
+             <i class="fas ${type === 'danger' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> ${message} 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        modalAlertPlaceholder.appendChild(alertDiv);
+    }
+
+    function clearModalAlerts() {
+        modalAlertPlaceholder.innerHTML = '';
+    }
+    function confirmDelete(event, deleteUrl) {
+        event.preventDefault(); // Stop the link from navigating immediately
+        if (confirm('Are you sure you want to delete this expense?')) {
+             window.location.href = deleteUrl;
+
+            
+        }
+        return false; 
+    }
+
+    /*]]>*/
 </script>
 </body>
 </html>
