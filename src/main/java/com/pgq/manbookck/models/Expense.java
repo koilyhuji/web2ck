@@ -36,8 +36,11 @@ public class Expense {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
     private LocalDate expenseDate;
 
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY is good for performance
-    @JoinColumn(name = "category_id") // FK column in the 'expenses' table
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "category_id")
     private ExpenseCategory category;
 
     @CreationTimestamp

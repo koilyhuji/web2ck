@@ -46,6 +46,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
             public String createdAt;
             public BigDecimal amount;
             public Long categoryId;
+            public String notes;
 
             public ExpenseDisplayDTO(Expense expense) {
                 this.id = expense.getId();
@@ -56,6 +57,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
                 this.createdAt = expense.getCreatedAt().toLocalDate().toString(); // Or format
                 this.amount = expense.getAmount();
                 this.categoryId = expense.getCategory().getId();
+                this.notes = expense.getNotes();
             }
         }
 
