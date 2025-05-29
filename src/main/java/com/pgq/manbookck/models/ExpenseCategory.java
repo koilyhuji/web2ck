@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,9 @@ public class ExpenseCategory {
 
     @Column(length = 255)
     private String description;
+
+    @Column(name = "budget_amount", nullable = true, precision = 15, scale = 0)
+    private BigDecimal budgetAmount;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
