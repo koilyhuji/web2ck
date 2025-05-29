@@ -455,11 +455,10 @@
 
     <div id="noExpensesCard" th:if="${#lists.isEmpty(expenses)}" class="no-expenses-card">
         <div class="icon-placeholder"><i class="fas fa-receipt"></i></div>
-        <p class="lead">No expenses found!</p>
-        <p>Looks like your expense list is empty. Why not add one now?</p>
-        <!-- MODIFIED: Button to trigger modal -->
+        <p class="lead">Không có chi tiêu!</p>
+        
         <button type="button" class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
-            <i class="fas fa-plus"></i> Add First Expense
+            <i class="fas fa-plus"></i> Thêm chi tiêu
         </button>
     </div>
 
@@ -471,6 +470,7 @@
                         <th>Ngày</th>
                         <th>Mô tả</th>
                         <th>Danh mục</th>
+                        <th>Ghi chú</th>
                         <th class="amount-column">Khoản chi (VND)</th>
                         <th class="text-center">Hành động</th>
                     </tr>
@@ -480,6 +480,7 @@
                         <td th:text="${#dates.format(expenseDTO.expenseDate, 'dd MMM yyyy')}">01 Jan 2023</td>
                         <td th:text="${expenseDTO.description}">Lunch with colleagues</td>
                         <td><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill px-2 py-1" th:text="${expenseDTO.categoryName ?: 'N/A'}">Food</span></td>
+                        <td th:text="${expenseDTO.notes}">Không</td>
                         <td class="amount-column" th:text="${expenseDTO.formattedAmount}">150.000 ₫</td>
                         <td class="actions text-center">
                             <button class="edit-expense-btn" data-bs-toggle="modal" data-bs-target="#addExpenseModal"
@@ -488,6 +489,7 @@
                                th:data-amount="${expenseDTO.amount}" 
                                th:data-date="${#dates.format(expenseDTO.expenseDate, 'yyyy-MM-dd')}" 
                                th:data-categoryid="${expenseDTO.categoryId ?: ''}"
+                               th:data-note="${expenseDTO.notes ?: ''}"
                                >
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -535,6 +537,10 @@
                     <div class="mb-3">
                         <label for="expenseDate" class="form-label">Ngày <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="expenseDate" name="expenseDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseNote" class="form-label">ghi chú </label>
+                        <textarea type="textarea" class="form-control" id="expenseNote" name="notes"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="expenseCategory" class="form-label">Danh mục</label>
@@ -588,6 +594,7 @@
     const expenseAmountInput = document.getElementById('expenseAmount');
     const expenseDateInput = document.getElementById('expenseDate');
     const expenseCategoryInput = document.getElementById('expenseCategory');
+    const expenseNoteInput = document.getElementById('expenseNote');
     
     const filterForm = document.getElementById('filterForm');
     const quickFilterButtons = document.querySelectorAll('.quick-filter-btn');
@@ -658,7 +665,7 @@
         expenseAmountInput.value = data.amount; // amount phải là số
         expenseDateInput.value = data.date;     // date phải là yyyy-MM-dd
         expenseCategoryInput.value = data.categoryid;
-        
+        expenseNoteInput.value = data.note;
         if (expenseDescriptionInput) {
             expenseDescriptionInput.focus();
         }
@@ -678,7 +685,8 @@
                 description: button.dataset.description,
                 amount: button.dataset.amount,
                 date: button.dataset.date,
-                categoryid: button.dataset.categoryid
+                categoryid: button.dataset.categoryid,
+                note: button.dataset.note
             };
             prepareModalForEdit(expenseData);
         } 
