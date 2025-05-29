@@ -1,21 +1,14 @@
--- -----------------------------------------------------
--- Table `expense_categories`
--- (No changes needed for currency handling here)
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS expense_categories (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,   -- Or BIGSERIAL for PostgreSQL
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,   
     name VARCHAR(100) NOT NULL UNIQUE,      -- e.g., "Ăn uống" (Food & Drink), "Tiện ích" (Utilities)
     description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- -----------------------------------------------------
--- Table `expenses`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS expenses (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,   -- Or BIGSERIAL for PostgreSQL
-    description VARCHAR(255) NOT NULL,      -- e.g., "Cà phê sáng" (Morning coffee)
-    -- For VND, we need a larger precision and 0 decimal places
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,   
+    description VARCHAR(255) NOT NULL,      
     amount DECIMAL(15, 0) NOT NULL,         -- Max 15 digits, 0 digits after decimal. E.g., 123,456,789,123,456
                                             -- This can store up to hundreds of trillions, plenty for expenses.
                                             -- Some might use BIGINT if decimals are *never* expected,
