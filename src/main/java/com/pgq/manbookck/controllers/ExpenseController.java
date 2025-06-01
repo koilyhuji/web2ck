@@ -23,6 +23,8 @@ import com.pgq.manbookck.services.CurrencyFormatterService;
 import com.pgq.manbookck.services.ExpenseCategoryService;
 import com.pgq.manbookck.services.ExpenseService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/expenses")
 public class ExpenseController {
@@ -114,7 +116,7 @@ public class ExpenseController {
 
     @PostMapping("/save")
     public String saveExpense(@ModelAttribute("expense") Expense expense,
-                            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+                            BindingResult result, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (result.hasErrors()) {
             populateCategoryDropdown(model);
             model.addAttribute("pageTitle", expense.getId() == null ? "Add New Expense" : "Edit Expense");
@@ -131,7 +133,10 @@ public class ExpenseController {
             model.addAttribute("expense", expense); // Send back the object to repopulate
             return "expenses/form";
         }
-        return "redirect:/expenses";
+        
+        String referer = request.getHeader("Referer");
+    
+        return "redirect:" + (referer != null && !referer.isEmpty() ? referer : "/expenses");
     }
 
     @GetMapping("/delete/{id}")

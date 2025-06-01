@@ -9,22 +9,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta name="_csrf" th:content="${_csrf?.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf?.headerName}"/>
-
     <style>
         :root {
-            --primary-color: #4A90E2; /* A modern, friendly blue */
+            --primary-color: #4A90E2;
             --primary-hover-color: #357ABD;
-            --light-bg: #F8F9FA; /* Very light grey for body */
+            --light-bg: #F8F9FA;
             --card-bg: #FFFFFF;
             --text-color: #333;
             --text-muted-color: #6c757d;
-            --border-color: #E0E0E0; /* Softer border color */
-            --success-color: #50C878; /* Emerald Green */
-            --danger-color: #E94B3C; /* A softer red */
-            --warning-color: #FFC107; /* Bootstrap yellow */
-            --info-color: #17A2B8;    /* Bootstrap info */
+            --border-color: #E0E0E0;
+            --success-color: #50C878;
+            --danger-color: #E94B3C;
+            --warning-color: #FFC107;
+            --info-color: #17A2B8;
             --navbar-bg: #FFFFFF;
             --navbar-text-color: #333;
             --navbar-link-hover-bg: #eef2f9;
@@ -36,224 +33,13 @@
             font-family: var(--font-family-sans-serif);
             color: var(--text-color);
             line-height: 1.6;
-            padding-top: 90px; /* Added padding for fixed navbar */
+            padding-top: 90px;
         }
 
-        .navbar-custom {
+        .navbar-custom { /* For main site navbar if used, not the floating one here */
             background-color: var(--navbar-bg);
             box-shadow: 0 2px 10px rgba(0,0,0,.05);
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border-color);
-        }
-
-        .navbar-custom .navbar-brand {
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-        .navbar-custom .navbar-brand .fa-wallet {
-            margin-right: 8px;
-        }
-
-        .navbar-custom .nav-link {
-            color: var(--navbar-text-color);
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem; /* Pill shape for active/hover */
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        }
-        .navbar-custom .nav-link:hover {
-            background-color: var(--navbar-link-hover-bg);
-            color: var(--primary-color);
-        }
-        .navbar-custom .nav-link.active {
-            background-color: var(--primary-color);
-            color: var(--card-bg) !important; /* white text */
-        }
-         .navbar-custom .navbar-toggler {
-            border-color: rgba(0,0,0,0.1);
-        }
-        .navbar-custom .navbar-toggler-icon {
-             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
-
-
-        .page-container {
-            padding-top: 1rem;
-            padding-bottom: 3rem;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            /* border-bottom: 1px solid var(--border-color); */
-        }
-        .page-header h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: var(--text-color);
-        }
-        /* --- Summary Cards --- */
-        .summary-cards-row {
-            margin-bottom: 2rem;
-        }
-        .summary-card {
-            background-color: var(--card-bg);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            height: 100%; /* Ensure cards in a row have same height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .summary-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,.07);
-        }
-        .summary-card .card-icon {
-            font-size: 2rem; /* Increased size */
-            color: var(--primary-color);
-            margin-bottom: 1rem; /* Increased margin */
-            display: block;
-        }
-        .summary-card h5 { /* Label */
-            font-size: 0.9rem;
-            color: var(--text-muted-color);
-            margin-bottom: 0.5rem; /* Increased margin */
-            font-weight: 600; /* Bolder */
-            text-transform: uppercase;
-        }
-        .summary-card .card-value { /* Value */
-            font-size: 2rem; /* Increased size */
-            font-weight: 700;
-            color: var(--text-color);
-            line-height: 1.2;
-        }
-        .summary-card .card-subtext { /* Optional subtext */
-            font-size: 0.8rem;
-            color: var(--text-muted-color);
-            margin-top: 0.25rem;
-        }
-
-        /* Specific icon colors for summary cards */
-        .summary-card.total-spent .card-icon { color: var(--danger-color); }
-        .summary-card.total-transactions .card-icon { color: var(--info-color); }
-        .summary-card.average-spend .card-icon { color: var(--warning-color); }
-        .summary-card.top-category .card-icon { color: var(--success-color); }
-
-
-        /* --- Filter Bar --- */
-        .filter-bar {
-            background-color: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
-            border: 1px solid var(--border-color);
-        }
-        .filter-bar .form-control, .filter-bar .form-select {
-            border-radius: 0.5rem;
-            border-color: var(--border-color);
-        }
-        .filter-bar .form-control:focus, .filter-bar .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb, 74, 144, 226), 0.25);
-        }
-        .filter-bar label {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-        .filter-bar .btn-outline-primary {
-            border-radius: 0.5rem;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-         .filter-bar .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .filter-bar .btn-primary { /* Added for AJAX loading state */
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-        .filter-bar .btn-primary:hover {
-            background-color: var(--primary-hover-color);
-            border-color: var(--primary-hover-color);
-        }
-
-        /* Custom Table for Reports */
-        .custom-table-wrapper {
-            background-color: var(--card-bg);
-            border-radius: 0.75rem;
-            padding: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            margin-top: 2rem;
-        }
-
-        .table-custom {
-            margin-bottom: 0;
-        }
-        .table-custom thead th {
-            background-color: var(--light-bg);
-            color: var(--text-muted-color);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-top: none;
-            border-bottom: 2px solid var(--border-color);
-            padding: 1rem;
-        }
-        .table-custom tbody td {
-            vertical-align: middle;
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-        .table-custom tbody tr:hover {
-            background-color: #eef2f9;
-        }
-        .table-custom .amount-column {
-            text-align: right;
-            font-weight: 600;
-        }
-        .table-custom .percentage-column {
-            text-align: right;
-        }
-        .table-custom .progress {
-            height: 10px;
-            background-color: #e9ecef;
-            border-radius: 0.25rem;
-        }
-        .table-custom .progress-bar {
-            background-color: var(--primary-color);
-        }
-
-
-        .chart-container {
-            background-color: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
-            border: 1px solid var(--border-color);
-            margin-top: 2rem;
-            min-height: 300px; /* Placeholder for chart */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted-color);
         }
 
         .floating-navbar {
@@ -264,7 +50,7 @@
             z-index: 1050;
             margin: 10px auto;
             width: 95%;
-            max-width: 600px; /* Limit width for aesthetic */
+            max-width: 600px;
             padding: 5px 10px;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -274,44 +60,152 @@
         }
         .floating-navbar .navbar-nav {
             flex-direction: row;
-            justify-content: center; /* Center nav items */
+            justify-content: center;
             width: 100%;
         }
-        .floating-navbar .nav-item {
-            margin: 0 1.5rem;
-        }
+        .floating-navbar .nav-item { margin: 0 1.5rem; }
         .floating-navbar .nav-link {
             padding: 0.5rem 0.75rem;
+            color: var(--navbar-text-color);
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
-        #globalAlerts { /* Assuming this from your previous HTML for consistency */
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 1055;
-            width: auto;
-            max-width: 400px;
+        .floating-navbar .nav-link:hover {
+            background-color: var(--navbar-link-hover-bg);
+            color: var(--primary-color);
         }
-         @media (max-width: 768px) {
+        .floating-navbar .nav-link.active {
+            background-color: var(--primary-color);
+            color: var(--card-bg) !important;
+        }
+
+        .page-container { padding-top: 1rem; padding-bottom: 3rem; }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+        .page-header h1 { font-size: 2.25rem; font-weight: 700; color: var(--text-color); }
+
+        .summary-cards-row { margin-bottom: 2rem; }
+        .summary-card {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .summary-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,.07); }
+        .summary-card .card-icon { font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem; display: block; }
+        .summary-card h5 { font-size: 0.9rem; color: var(--text-muted-color); margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; }
+        .summary-card .card-value { font-size: 2rem; font-weight: 700; color: var(--text-color); line-height: 1.2; }
+        .summary-card .card-subtext { font-size: 0.8rem; color: var(--text-muted-color); margin-top: 0.25rem; }
+        .summary-card.total-spent .card-icon { color: var(--danger-color); }
+        .summary-card.total-transactions .card-icon { color: var(--info-color); }
+        .summary-card.average-spend .card-icon { color: var(--warning-color); }
+        .summary-card.top-category .card-icon { color: var(--success-color); }
+
+        .filter-bar {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 1px solid var(--border-color);
+        }
+        .filter-bar .btn-quick-filter {
+            border-radius: 0.5rem;
+            margin-right: 0.5rem; /* Spacing between buttons */
+        }
+        .filter-bar .btn-quick-filter.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+         .filter-bar .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+         .filter-bar .btn-outline-primary:hover:not(.active) { /* Ensure hover on non-active is different */
+            background-color: var(--primary-hover-color);
+            border-color: var(--primary-hover-color);
+            color: white;
+        }
+
+
+        .custom-table-wrapper {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .table-custom { margin-bottom: 0; }
+        .table-custom thead th {
+            background-color: var(--light-bg);
+            color: var(--text-muted-color);
+            font-weight: 600;
+            font-size: 0.85rem; /* Slightly smaller for more columns */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-top: none;
+            border-bottom: 2px solid var(--border-color);
+            padding: 0.75rem 1rem; /* Adjusted padding */
+        }
+        .table-custom tbody td {
+            vertical-align: middle;
+            padding: 0.75rem 1rem; /* Adjusted padding */
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        .table-custom tbody tr:hover { background-color: #eef2f9; }
+        .table-custom .amount-column { text-align: right; font-weight: 500; }
+        .table-custom .percentage-column { text-align: right; }
+        .table-custom .progress { height: 12px; background-color: #e9ecef; border-radius: 0.25rem; }
+        .table-custom .progress-bar { background-color: var(--primary-color); }
+        .table-custom .progress-bar.bg-warning { background-color: var(--warning-color) !important; }
+        .table-custom .progress-bar.bg-danger { background-color: var(--danger-color) !important; }
+        .text-danger { color: var(--danger-color) !important; }
+        .text-success { color: var(--success-color) !important; }
+
+
+        .chart-container {
+            background-color: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05); border: 1px solid var(--border-color);
+            margin-top: 2rem; min-height: 300px; display: flex; align-items: center;
+            justify-content: center; color: var(--text-muted-color);
+        }
+
+        #globalAlerts {
+            position: fixed; top: 100px; right: 20px; z-index: 1055;
+            width: auto; max-width: 400px;
+        }
+        .loading-spinner { /* For filter bar if needed, or general loading */
+            display: inline-block; width: 1rem; height: 1rem; vertical-align: text-bottom;
+            border: .2em solid currentColor; border-right-color: transparent;
+            border-radius: 50%; animation: spinner-border .75s linear infinite; margin-left: 0.5rem;
+        }
+        @keyframes spinner-border { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
             body { padding-top: 70px; }
             .page-header h1 { font-size: 1.75rem; }
             .summary-card { margin-bottom: 1rem; }
             .summary-card .card-value { font-size: 1.5rem; }
             .summary-card .card-icon { font-size: 1.5rem; }
             .floating-navbar { width: 90%; }
-        }
-        .loading-spinner {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            vertical-align: text-bottom;
-            border: .2em solid currentColor;
-            border-right-color: transparent;
-            border-radius: 50%;
-            animation: spinner-border .75s linear infinite;
-            margin-left: 0.5rem;
-        }
-        @keyframes spinner-border {
-            to { transform: rotate(360deg); }
+            .filter-bar .btn-quick-filter { margin-bottom: 0.5rem; width: 100%; } /* Stack buttons on mobile */
         }
     </style>
 </head>
@@ -341,143 +235,153 @@
         </div>
     </nav>
 
-    <!-- Global Alert Container -->
     <div id="globalAlerts"></div>
 
+    <div class="container-fluid page-container">
+        <!-- Flash Messages from Thymeleaf (server-side redirects) -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
-<div class="container-fluid page-container">
-
-    <!-- Flash Messages -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-        <form class="row g-3 align-items-end" id="filterForm"> <!-- Removed action and method for JS handling -->
-            <div class="col-md-3">
-                <label for="searchExpense" class="form-label">Tìm Kiếm</label>
-                <input type="text" class="form-control" th:value="${currentSearch}" name="search" id="searchExpense" placeholder="Tìm theo mô tả...">
-            </div>
-            <div class="col-md-3">
-                <label for="filterCategory" class="form-label">Danh mục</label>
-                <select id="filterCategory" class="form-select" name="categoryId">
-                    <option value="">Tất cả danh mục</option>
-                    <option th:each="cat : ${allCategories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${currentCategoryId != null && cat.id == currentCategoryId}">Category</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="filterDateFrom" class="form-label">Từ ngày</label>
-                <input type="date" class="form-control" id="filterDateFrom"
-                       name="dateFrom" th:value="${currentDateFrom != null ? #temporals.format(currentDateFrom, 'yyyy-MM-dd') : ''}">
-            </div>
-            <div class="col-md-2">
-                <label for="filterDateTo" class="form-label">Đến ngày</label>
-                <input type="date" class="form-control" id="filterDateTo"
-                       name="dateTo" th:value="${currentDateTo != null ? #temporals.format(currentDateTo, 'yyyy-MM-dd') : ''}">
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100" id="filterSubmitButton">
-                    <i class="fas fa-sync-alt"></i> Cập nhật
-                    <span class="loading-spinner d-none"></span>
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <div class="page-header">
-        <h1 th:text="${pageTitle ?: 'Báo cáo Chi tiêu'}">Báo cáo Chi tiêu</h1>
-    </div>
-
-    <!-- Summary Cards Row -->
-    <div class="row summary-cards-row g-4" id="summaryCardsContainer">
-        <div class="col-xl-3 col-md-6">
-            <div class="summary-card total-spent">
-                <span class="card-icon"><i class="fas fa-wallet"></i></span>
-                <h5>Tổng chi</h5>
-                <div class="card-value" id="summaryTotalSpent">0 ₫</div>
+        <!-- Filter Bar with Quick Buttons -->
+        <div class="filter-bar">
+            <div class="d-flex flex-wrap justify-content-start align-items-center">
+                <button type="button" class="btn btn-outline-primary btn-quick-filter active" data-range="this-month">Tháng này</button>
+                <button type="button" class="btn btn-outline-primary btn-quick-filter" data-range="last-month">Tháng trước</button>
+                <button type="button" class="btn btn-outline-primary btn-quick-filter" data-range="2-months-ago">2 tháng trước</button>
+                <button type="button" class="btn btn-outline-primary btn-quick-filter" data-range="3-months-ago">3 tháng trước</button>
+                <div id="filterLoadingIndicator" class="ms-auto d-none">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="summary-card total-transactions">
-                <span class="card-icon"><i class="fas fa-receipt"></i></span>
-                <h5>Số giao dịch</h5>
-                <div class="card-value" id="summaryTotalTransactions">0</div>
+
+        <div class="page-header">
+            <h1 id="reportPageTitle" th:text="${pageTitle ?: 'Báo cáo Chi tiêu'}">Báo cáo Chi tiêu</h1>
+        </div>
+
+        <!-- Compact Summary and Chart Row -->
+        <div class="row summary-and-chart-row g-4 mb-4" id="summaryAndChartContainer">
+            <!-- Left Column for Summary Cards -->
+            <div class="col-lg-4 col-md-12 d-flex flex-column">
+                <div class="summary-card total-spent mb-4 flex-grow-1">
+                    <span class="card-icon"><i class="fas fa-wallet"></i></span>
+                    <h5>Tổng chi</h5>
+                    <div class="card-value" id="summaryTotalSpent">0 ₫</div>
+                </div>
+                <div class="summary-card total-transactions flex-grow-1">
+                    <span class="card-icon"><i class="fas fa-receipt"></i></span>
+                    <h5>Số giao dịch</h5>
+                    <div class="card-value" id="summaryTotalTransactions">0</div>
+                </div>
+            </div>
+
+            <!-- Right Column for Pie Chart -->
+            <div class="col-lg-8 col-md-12">
+                <div class="bg-white p-3 border rounded-3 shadow-sm h-100" id="expensePieChartWrapper" style="min-height: 350px">
+                        <!-- Added h-100 for vertical fill -->
+                    <canvas id="expensePieChartCanvas"></canvas>
+                </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="summary-card average-spend">
-                <span class="card-icon"><i class="fas fa-calculator"></i></span>
-                <h5>Chi tiêu TB</h5>
-                <div class="card-value" id="summaryAverageSpend">0 ₫</div>
-                <div class="card-subtext">mỗi giao dịch</div>
+
+        <div id="noReportDataAlert" class="alert alert-info text-center d-none">
+            <i class="fas fa-info-circle"></i> Không có dữ liệu báo cáo cho lựa chọn hiện tại hoặc không có chi tiêu nào trong kỳ.
+        </div>
+        <div class="row daily-trend-chart-row mt-4 mb-4">
+            <div class="col-12">
+                <div class="bg-white p-3 p-md-4 border rounded-3 shadow-sm" id="dailyTrendChartWrapper" style="min-height: 350px; display: none;">
+                    <h5 class="text-center mb-3" id="dailyTrendChartTitle">Xu hướng Chi tiêu Hàng ngày</h5>
+                    <canvas id="dailyTrendChartCanvas"></canvas>
+                </div>
+                <div id="noDataForDailyTrendMessage" class="text-center py-5 d-none">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-2"></i>
+                    <p>Không có dữ liệu xu hướng chi tiêu hàng ngày để hiển thị.</p>
+                </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="summary-card top-category">
-                <span class="card-icon"><i class="fas fa-star"></i></span>
-                <h5>Mục chi nhiều nhất</h5>
-                <div class="card-value" id="summaryTopCategoryName">N/A</div>
-                <div class="card-subtext" id="summaryTopCategoryAmount"></div>
+        <div class="custom-table-wrapper mt-4" id="expenseDetailsTableContainer" style="display: none;">
+            <h4 class="p-3 mb-0">Chi tiết Chi tiêu</h4>
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Mô tả</th>
+                            <th class="amount-column">Số tiền (VND)</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseDetailsTableBody">
+                        <!-- Rows will be injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="noExpenseDetailsDataAlert" class="alert alert-info text-center m-3 d-none">
+                <i class="fas fa-info-circle"></i> Không có chi tiết chi tiêu nào cho giai đoạn này.
             </div>
         </div>
-    </div>
-    <div id="noReportDataAlert" class="alert alert-info text-center d-none">
-        <i class="fas fa-info-circle"></i> Không có dữ liệu báo cáo cho lựa chọn hiện tại.
-    </div>
 
-
-    <!-- Spending by Category Table -->
-    <div class="custom-table-wrapper" id="spendingByCategoryTableContainer" style="display: none;">
-        <h4 class="p-3 mb-0">Chi tiêu theo Danh mục</h4>
-        <div class="table-responsive">
-            <table class="table table-hover table-custom">
-                <thead>
-                    <tr>
-                        <th>Danh mục</th>
-                        <th class="amount-column">Số tiền (VND)</th>
-                        <th class="percentage-column">Tỷ lệ (%)</th>
-                        <th>Phân bổ</th>
-                    </tr>
-                </thead>
-                <tbody id="spendingByCategoryTableBody">
-                    <!-- Rows will be injected by JS -->
-                </tbody>
-                 <tfoot>
-                    <tr style="font-weight: bold; background-color: var(--light-bg);">
-                        <td>TỔNG CỘNG</td>
-                        <td class="amount-column" id="tableTotalSpent">0 ₫</td>
-                        <td class="percentage-column">100%</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
+        <!-- Spending by Category Table -->
+        <div class="custom-table-wrapper" id="spendingByCategoryTableContainer" style="display: none;">
+            <h4 class="p-3 mb-0">Chi tiêu theo Danh mục</h4>
+            <div class="table-responsive">
+                <table class="table table-hover table-custom">
+                    <thead>
+                        <tr>
+                            <th>Danh mục</th>
+                            <th class="amount-column">Ngân sách (VND)</th>
+                            <th class="amount-column">Đã chi (VND)</th>
+                            <th class="percentage-column">Sử dụng (%)</th>
+                            <th>Mức sử dụng ngân sách</th> <!-- Progress Bar -->
+                            <th class="amount-column">Còn lại/Vượt (VND)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="spendingByCategoryTableBody">
+                        <!-- Rows will be injected by JS -->
+                    </tbody>
+                    <tfoot>
+                        <tr style="font-weight: bold; background-color: var(--light-bg);">
+                            <td>TỔNG CỘNG</td>
+                            <td class="amount-column" id="tableTotalBudget">0 ₫</td>
+                            <td class="amount-column" id="tableTotalSpent">0 ₫</td>
+                            <td class="percentage-column" id="tableTotalBudgetUsage">-</td>
+                            <td></td> <!-- Progress bar for total doesn't make sense here unless calculated carefully -->
+                            <td class="amount-column" id="tableTotalRemaining">0 ₫</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-    </div>
 
-    <!-- Placeholder for Charts -->
-    <div class="chart-container" id="chartPlaceholder" style="display: none;">
-        <div>
-            <i class="fas fa-chart-line fa-3x mb-3"></i>
-            <p>Biểu đồ xu hướng chi tiêu sẽ được hiển thị ở đây.</p>
-            <small>(Cần tích hợp thư viện biểu đồ)</small>
-        </div>
-    </div>
+        
+    </div> <!-- End page-container -->
 
-</div> <!-- End page-container -->
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script th:inline="javascript">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script> 
+    <script th:inline="javascript">
     /*<![CDATA[*/
     const rootStyles = getComputedStyle(document.documentElement);
-    const primaryColor = rootStyles.getPropertyValue('--primary-color').trim();
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    const primaryColorHex = rootStyles.getPropertyValue('--primary-color').trim();
+    
+    //pie chart
+    const summaryAndChartContainer = document.getElementById('summaryAndChartContainer'); // Get the new main container
+    const expensePieChartWrapper = document.getElementById('expensePieChartWrapper');
+    const expensePieChartCanvas = document.getElementById('expensePieChartCanvas');
+    let expensePieChart = null;
+    //trend chart
+    const dailyTrendChartWrapper = document.getElementById('dailyTrendChartWrapper');
+    const dailyTrendChartCanvas = document.getElementById('dailyTrendChartCanvas');
+    const noDataForDailyTrendMessage = document.getElementById('noDataForDailyTrendMessage');
+    let dailyTrendChart = null;
 
     function hexToRgb(hex) {
         const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -485,29 +389,33 @@
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
     }
-    if (primaryColor) {
-        document.documentElement.style.setProperty('--primary-color-rgb', hexToRgb(primaryColor));
+    if (primaryColorHex) {
+        document.documentElement.style.setProperty('--primary-color-rgb', hexToRgb(primaryColorHex));
     }
 
     const globalAlertsContainer = document.getElementById('globalAlerts');
-    const summaryCardsContainer = document.getElementById('summaryCardsContainer');
     const noReportDataAlert = document.getElementById('noReportDataAlert');
     const spendingByCategoryTableContainer = document.getElementById('spendingByCategoryTableContainer');
     const spendingByCategoryTableBody = document.getElementById('spendingByCategoryTableBody');
-    const chartPlaceholder = document.getElementById('chartPlaceholder');
-    const filterForm = document.getElementById('filterForm');
-    const filterSubmitButton = document.getElementById('filterSubmitButton');
-    const loadingSpinner = filterSubmitButton.querySelector('.loading-spinner');
+    const quickFilterButtons = document.querySelectorAll('.btn-quick-filter');
+    const filterLoadingIndicator = document.getElementById('filterLoadingIndicator');
+    const reportPageTitle = document.getElementById('reportPageTitle');
+    const expenseDetailsTableContainer = document.getElementById('expenseDetailsTableContainer');
+    const expenseDetailsTableBody = document.getElementById('expenseDetailsTableBody');
+    const noExpenseDetailsDataAlert = document.getElementById('noExpenseDetailsDataAlert');
 
 
-    function formatCurrency(amount) {
-        if (amount == null) return '0 ₫';
-        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace(/\s/g, ' '); // Ensure space for VND
+    let allCategoriesData = []; // To store fetched categories with budget
+
+    function formatCurrency(amount, showCurrencySymbol = true) {
+        if (amount == null || isNaN(amount)) return showCurrencySymbol ? '0 ₫' : '0';
+        const options = showCurrencySymbol ? { style: 'currency', currency: 'VND' } : { useGrouping: true, minimumFractionDigits: 0, maximumFractionDigits: 0 };
+        return amount.toLocaleString('vi-VN', options).replace(/\s₫$/, ' ₫'); // Ensure space before VND
     }
 
-    function formatPercentage(value) {
+    function formatPercentage(value, decimals = 1) {
         if (value == null || isNaN(value)) return '0.0%';
-        return value.toFixed(1) + '%';
+        return value.toFixed(decimals) + '%';
     }
 
     function showGlobalAlert(message, type = 'success', duration = 5000) {
@@ -516,159 +424,436 @@
         alertDiv.id = alertId;
         alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
         alertDiv.setAttribute('role', 'alert');
-
         let iconClass = 'fas fa-check-circle';
         if (type === 'danger' || type === 'error') iconClass = 'fas fa-exclamation-triangle';
         else if (type === 'warning') iconClass = 'fas fa-exclamation-circle';
         else if (type === 'info') iconClass = 'fas fa-info-circle';
-
-        alertDiv.innerHTML = `
-            <i class="${iconClass}"></i> ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
+        alertDiv.innerHTML = `<i class="${iconClass}"></i> ${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
         globalAlertsContainer.appendChild(alertDiv);
-
-        // Auto-dismiss
         setTimeout(() => {
             const alertToRemove = document.getElementById(alertId);
-            if (alertToRemove) {
-                bootstrap.Alert.getOrCreateInstance(alertToRemove).close();
-            }
+            if (alertToRemove) bootstrap.Alert.getOrCreateInstance(alertToRemove)?.close();
         }, duration);
     }
 
-    function updateUIWithReportData(data) {
+    function getDateRangeForFilter(filterType) {
+        const now = new Date();
+        let year = now.getFullYear();
+        let month = now.getMonth(); // 0-indexed
+
+        switch (filterType) {
+            case 'this-month':
+                // Current month
+                break;
+            case 'last-month':
+                month -= 1;
+                if (month < 0) { month = 11; year -= 1; }
+                break;
+            case '2-months-ago':
+                month -= 2;
+                while (month < 0) { month += 12; year -= 1; }
+                break;
+            case '3-months-ago':
+                month -= 3;
+                while (month < 0) { month += 12; year -= 1; }
+                break;
+            default: // Default to this month
+                break;
+        }
+
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 0); // 0 day of next month is last day of current
+
+        const formatDateToISO = (date) => date.toISOString().split('T')[0];
+        return {
+            dateFrom: formatDateToISO(startDate),
+            dateTo: formatDateToISO(endDate),
+            monthName: startDate.toLocaleString('vi-VN', { month: 'long', year: 'numeric' })
+        };
+    }
+    function getPieChartColors(count) {
+        const baseColors = [
+            '#4A90E2', '#50E3C2', '#F5A623', '#F8E71C', '#BD10E0', '#7ED321',
+            '#E94B3C', '#9013FE', '#B8E986', '#417505', '#d94e94', '#2d72d9',
+            '#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0', '#9966ff'
+        ];
+        let colors = [];
+        for (let i = 0; i < count; i++) {
+            colors.push(baseColors[i % baseColors.length]);
+        }
+        return colors;
+    }
+    function updateUIWithReportData(data, monthName) {
+        reportPageTitle.textContent = `Báo cáo Chi tiêu - ${monthName}`;
+
         // Summary Cards
         document.getElementById('summaryTotalSpent').textContent = formatCurrency(data.totalAmount);
         document.getElementById('summaryTotalTransactions').textContent = data.totalCount || 0;
 
-        const averageSpend = (data.totalCount > 0 && data.totalAmount != null) ? (data.totalAmount / data.totalCount) : 0;
-        document.getElementById('summaryAverageSpend').textContent = formatCurrency(averageSpend);
-
-        // Top Spending Category
-        let topCategoryName = 'N/A';
-        let topCategoryAmount = 0;
-        if (data.amountByCategory && Object.keys(data.amountByCategory).length > 0) {
-            topCategoryName = Object.keys(data.amountByCategory).reduce((a, b) =>
-                data.amountByCategory[a] > data.amountByCategory[b] ? a : b
-            );
-            topCategoryAmount = data.amountByCategory[topCategoryName];
-        }
-        document.getElementById('summaryTopCategoryName').textContent = topCategoryName;
-        const topCategoryAmountEl = document.getElementById('summaryTopCategoryAmount');
-        if (topCategoryAmount > 0) {
-             topCategoryAmountEl.textContent = formatCurrency(topCategoryAmount);
-             topCategoryAmountEl.style.display = 'block';
-        } else {
-            topCategoryAmountEl.textContent = '';
-            topCategoryAmountEl.style.display = 'none';
-        }
-
+       
 
         // Spending by Category Table
         spendingByCategoryTableBody.innerHTML = ''; // Clear previous data
+        let overallTotalBudget = 0;
+        let overallTotalSpent = data.totalAmount || 0;
+
+        if (expensePieChart) {
+            expensePieChart.destroy(); // Destroy previous chart instance
+            expensePieChart = null;
+        }
+
         if (data.totalCount > 0 && data.amountByCategory && Object.keys(data.amountByCategory).length > 0) {
-            summaryCardsContainer.classList.remove('d-none');
             spendingByCategoryTableContainer.style.display = 'block';
-            chartPlaceholder.style.display = 'flex'; // Or 'block' if that's preferred
             noReportDataAlert.classList.add('d-none');
 
-            const categories = Object.entries(data.amountByCategory).map(([name, amount]) => ({
-                categoryName: name,
-                amountSpent: amount,
-                percentageOfTotal: (data.totalAmount > 0 ? (amount / data.totalAmount) * 100 : 0)
-            })).sort((a,b) => b.amountSpent - a.amountSpent); // Sort by amount desc
+            // pie chart
+            const categoryNames = Object.keys(data.amountByCategory);
+            const categorySpending = Object.values(data.amountByCategory);
+            const pieCtx = expensePieChartCanvas.getContext('2d');
+            expensePieChart = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: categoryNames,
+                    datasets: [{
+                        label: 'Chi theo danh mục',
+                        data: categorySpending,
+                        backgroundColor: getPieChartColors(categoryNames.length),
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 20,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += formatCurrency(context.parsed);
+                                    }
+                                    const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                                    const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) + '%' : '0%';
+                                    label += ` (${percentage})`;
+                                    return label;
+                                }
+                            }
+                        },
+                        // Add this plugin for direct labels on chart
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) + '%' : '0%';
+                                return [ctx.chart.data.labels[ctx.dataIndex], percentage];
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            },
+                            anchor: 'center',
+                            align: 'center',
+                            offset: 0,
+                            padding: 6,
+                            textShadowColor: 'rgba(0,0,0,0.8)',
+                            textShadowBlur: 4
+                        }
+                    },
+                    // Add this to handle small segments
+                    layout: {
+                        padding: {
+                            top: 20,
+                            bottom: 20,
+                            left: 20,
+                            right: 20
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels] // Make sure to include the ChartDataLabels plugin
+            });
 
-            categories.forEach(catSpending => {
+            //
+            const categoriesSpending = Object.entries(data.amountByCategory).map(([name, amount]) => ({
+                categoryName: name,
+                amountSpent: amount
+            })).sort((a,b) => b.amountSpent - a.amountSpent);
+
+            allCategoriesData.forEach(cateData => {
+                const categoryDetails = cateData
+                const budgetAmount = categoryDetails?.budgetAmount ?? null; 
+                const amountSpent = categoriesSpending.find(c => c.categoryName === categoryDetails.name)?.amountSpent ?? 0;
+
+                if (budgetAmount != null) {
+                    overallTotalBudget += budgetAmount;
+                }
+
+                let percentageUsed = 0;
+                let progressBarClass = 'bg-primary';
+                if (budgetAmount != null && budgetAmount > 0) {
+                    percentageUsed = (amountSpent / budgetAmount) * 100;
+                    if (percentageUsed > 100) progressBarClass = 'bg-danger';
+                    else if (percentageUsed > 75) progressBarClass = 'bg-warning';
+                } else if (budgetAmount === 0 && amountSpent > 0) {
+                     percentageUsed = 100; // Spent something on a zero budget
+                     progressBarClass = 'bg-danger';
+                }
+
+
+                const remainingOrOverspent = (budgetAmount != null) ? budgetAmount - amountSpent : null;
+
                 const row = spendingByCategoryTableBody.insertRow();
                 row.innerHTML = `
-                    <td>${catSpending.categoryName}</td>
-                    <td class="amount-column">${formatCurrency(catSpending.amountSpent)}</td>
-                    <td class="percentage-column">${formatPercentage(catSpending.percentageOfTotal)}</td>
+                    <td>${categoryDetails.name}</td>
+                    <td class="amount-column">${budgetAmount != null ? formatCurrency(budgetAmount) : 'N/A'}</td>
+                    <td class="amount-column">${formatCurrency(amountSpent)}</td>
+                    <td class="percentage-column">${(budgetAmount != null && budgetAmount >= 0) ? formatPercentage(percentageUsed) : 'N/A'}</td>
                     <td>
+                        ${ (budgetAmount != null && budgetAmount >= 0) ? `
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: ${catSpending.percentageOfTotal.toFixed(1)}%;"
-                                 aria-valuenow="${catSpending.percentageOfTotal.toFixed(1)}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar ${progressBarClass}" role="progressbar"
+                                 style="width: ${Math.min(percentageUsed, 100).toFixed(1)}%;"
+                                 aria-valuenow="${percentageUsed.toFixed(1)}" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
+                        ` : '<span>-</span>'}
+                    </td>
+                    <td class="amount-column ${remainingOrOverspent != null && remainingOrOverspent < 0 ? 'text-danger' : (remainingOrOverspent !=null ? 'text-success' : '')}">
+                        ${remainingOrOverspent != null ? formatCurrency(remainingOrOverspent) : 'N/A'}
                     </td>
                 `;
             });
-            document.getElementById('tableTotalSpent').textContent = formatCurrency(data.totalAmount);
         } else {
-            summaryCardsContainer.classList.add('d-none'); // Hide summary cards if no data
             spendingByCategoryTableContainer.style.display = 'none';
-            chartPlaceholder.style.display = 'none';
             noReportDataAlert.classList.remove('d-none');
+        }
+        // Update table footer
+        document.getElementById('tableTotalBudget').textContent = formatCurrency(overallTotalBudget);
+        document.getElementById('tableTotalSpent').textContent = formatCurrency(overallTotalSpent);
+        const overallBudgetUsage = (overallTotalBudget > 0) ? (overallTotalSpent / overallTotalBudget) * 100 : 0;
+        document.getElementById('tableTotalBudgetUsage').textContent = (overallTotalBudget > 0) ? formatPercentage(overallBudgetUsage) : '-';
+        document.getElementById('tableTotalRemaining').textContent = formatCurrency(overallTotalBudget - overallTotalSpent);
+
+    }
+    function updateExpenseDetailsTable(expenses) {
+        expenseDetailsTableBody.innerHTML = ''; // Clear previous data
+
+        if (expenses && expenses.length > 0) {
+            expenseDetailsTableContainer.style.display = 'block';
+            noExpenseDetailsDataAlert.classList.add('d-none');
+
+            expenses.sort((a,b) => new Date(b.expenseDate) - new Date(a.expenseDate) || b.id - a.id); // Sort by date desc, then ID
+
+            expenses.forEach(expense => {
+                const row = expenseDetailsTableBody.insertRow();
+                // Ensure date is parsed as local if it's meant to be, or consistently as UTC.
+                // Assuming expense.expenseDate is "YYYY-MM-DD" and represents the actual day of expense.
+                const expenseDate = new Date(expense.expenseDate + 'T08:00:00Z'); // Treat as UTC midnight
+                
+                row.innerHTML = `
+                    <td>${expenseDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
+                    <td>${expense.description || '-'}</td>
+                    <td class="amount-column">${formatCurrency(expense.amount)}</td>
+                    <td>${expense.notes || '-'}</td>
+                `;
+            });
+        } else {
+            expenseDetailsTableContainer.style.display = 'none';
+            noExpenseDetailsDataAlert.classList.remove('d-none');
         }
     }
 
-    async function fetchReportData() {
-        filterSubmitButton.disabled = true;
-        loadingSpinner.classList.remove('d-none');
-
-        const formData = new FormData(filterForm);
+    async function fetchExpenseDetails(dateFrom, dateTo) {
+        // Note: filterLoadingIndicator is handled by the caller (Promise.all wrapper)
         const params = new URLSearchParams();
-        for (const pair of formData) {
-            if (pair[1]) { // Only add if value is not empty
-                 params.append(pair[0], pair[1]);
-            }
-        }
+        if (dateFrom) params.append('dateFrom', dateFrom);
+        if (dateTo) params.append('dateTo', dateTo);
 
-        // Reset UI to loading/empty state
-        // document.getElementById('summaryTotalSpent').textContent = '...';
-        // ... (reset other elements or show a general loading overlay for content area)
+        try {
+            const response = await fetch(`/api/expenses?${params.toString()}`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) {
+                let errorMsg = `Error ${response.status} fetching expense details: ${response.statusText}`;
+                try {
+                    const errorData = await response.json();
+                    errorMsg = errorData.message || errorMsg;
+                } catch (e) { /* Ignore if errorData is not JSON */ }
+                throw new Error(errorMsg);
+            }
+            const expenseDetailsData = await response.json();
+            updateExpenseDetailsTable(expenseDetailsData);
+        } catch (error) {
+            console.error('Failed to fetch expense details:', error);
+            showGlobalAlert('Không thể tải chi tiết chi tiêu: ' + error.message, 'danger');
+            updateExpenseDetailsTable([]); // Reset table UI by passing empty array
+        }
+    }
+
+
+    async function fetchCategories() {
+        try {
+            const response = await fetch(`/api/categories`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) throw new Error(`Error ${response.status} fetching categories`);
+            allCategoriesData = await response.json();
+        } catch (error) {
+            console.error('Failed to fetch categories:', error);
+            showGlobalAlert('Không thể tải danh sách danh mục: ' + error.message, 'danger');
+            allCategoriesData = []; // Ensure it's an empty array on failure
+        }
+    }
+
+    async function fetchReportData(dateFrom, dateTo, monthName) {
+        filterLoadingIndicator.classList.remove('d-none');
+        const params = new URLSearchParams();
+        if (dateFrom) params.append('dateFrom', dateFrom);
+        if (dateTo) params.append('dateTo', dateTo);
 
         try {
             const response = await fetch(`/api/expenses/summary?${params.toString()}`, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    // CSRF token is generally not needed for GET requests
-                }
+                headers: { 'Accept': 'application/json' }
             });
-
             if (!response.ok) {
                 let errorMsg = `Error ${response.status}: ${response.statusText}`;
                 try {
                     const errorData = await response.json();
                     errorMsg = errorData.message || errorMsg;
-                } catch (e) { /* Ignore if error response is not JSON */ }
+                } catch (e) { /* Ignore */ }
                 throw new Error(errorMsg);
             }
-
             const reportData = await response.json();
-            updateUIWithReportData(reportData);
-
+            updateUIWithReportData(reportData, monthName);
         } catch (error) {
             console.error('Failed to fetch report data:', error);
             showGlobalAlert('Không thể tải dữ liệu báo cáo: ' + error.message, 'danger');
-            // Optionally, clear the UI or show an error state in the data sections
-             updateUIWithReportData({ totalAmount: 0, totalCount: 0, amountByCategory: {} }); // Reset to empty state
+            updateUIWithReportData({ totalAmount: 0, totalCount: 0, amountByCategory: {} }, monthName); // Reset UI
         } finally {
-            filterSubmitButton.disabled = false;
-            loadingSpinner.classList.add('d-none');
+            filterLoadingIndicator.classList.add('d-none');
+        }
+    }
+    async function fetchAndRenderDailyTrendChart(dateFrom, dateTo) {
+        if (dailyTrendChart) {
+            dailyTrendChart.destroy();
+            dailyTrendChart = null;
+        }
+
+        const params = new URLSearchParams();
+        if (dateFrom) params.append('dateFrom', dateFrom);
+        if (dateTo) params.append('dateTo', dateTo);
+
+        // Update chart title with the date range
+        // You might want a more sophisticated way to display the range if it's long
+        const formattedDateFrom = dateFrom ? new Date(dateFrom + 'T00:00:00').toLocaleDateString('vi-VN') : '';
+        const formattedDateTo = dateTo ? new Date(dateTo + 'T00:00:00').toLocaleDateString('vi-VN') : '';
+        document.getElementById('dailyTrendChartTitle').textContent = `Xu hướng Chi tiêu Hàng ngày (${formattedDateFrom} - ${formattedDateTo})`;
+
+
+        try {
+            const response = await fetch(`/api/expenses/daily-totals?${params.toString()}`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) {
+                let errorMsg = `Error ${response.status} fetching daily totals: ${response.statusText}`;
+                try { const errData = await response.json(); errorMsg = errData.message || errorMsg; } catch (e) {}
+                throw new Error(errorMsg);
+            }
+
+            const dailyData = await response.json();
+
+            if (dailyData && dailyData.length > 0 && dailyData.some(d => d.totalAmount > 0)) {
+                dailyTrendChartWrapper.style.display = 'block';
+                noDataForDailyTrendMessage.classList.add('d-none');
+
+                const labels = dailyData.map(item => {
+                    // Format date for display (e.g., DD/MM)
+                    const dateObj = new Date(item.date + "T00:00:00Z"); // Ensure UTC interpretation if date is just YYYY-MM-DD
+                    return `${dateObj.getUTCDate()}/${dateObj.getUTCMonth() + 1}`;
+                });
+                const amounts = dailyData.map(item => item.totalAmount);
+
+                const trendCtx = dailyTrendChartCanvas.getContext('2d');
+                dailyTrendChart = new Chart(trendCtx, {
+                    type: 'bar', // Base type is bar
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            // Column chart (daily amounts)
+                            {
+                                type: 'bar', // Explicitly set as bar
+                                label: 'Chi tiêu hàng ngày',
+                                data: amounts,
+                                backgroundColor: '#3a86ff', // Blue columns
+                                borderColor: '#3a86ff',
+                                borderWidth: 1,
+                                borderRadius: 4, // Rounded corners
+                                order: 2 // Draw behind line
+                            }
+                        ]
+                    }
+                });
+
+            } else {
+                dailyTrendChartWrapper.style.display = 'none';
+                noDataForDailyTrendMessage.classList.remove('d-none');
+            }
+
+        } catch (error) {
+            console.error('Failed to fetch or render daily trend chart:', error);
+            showGlobalAlert('Không thể tải biểu đồ xu hướng hàng ngày: ' + error.message, 'danger');
+            dailyTrendChartWrapper.style.display = 'none';
+            noDataForDailyTrendMessage.classList.remove('d-none');
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initial data load
-        fetchReportData();
+    document.addEventListener('DOMContentLoaded', async function() {
+        await fetchCategories(); // Load categories first
 
-        filterForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            fetchReportData();
+        quickFilterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                quickFilterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                const rangeType = this.dataset.range;
+                const { dateFrom, dateTo, monthName } = getDateRangeForFilter(rangeType);
+                fetchReportData(dateFrom, dateTo, monthName);
+                fetchAndRenderDailyTrendChart(dateFrom,dateTo);
+                fetchExpenseDetails(dateFrom,dateTo);
+            });
         });
 
-        // Any other initializations (like chart) would go here
-        // Example: If you were using Chart.js
-        // const ctx = document.getElementById('myExpenseChart'); // Ensure you add a canvas with this ID
-        // if (ctx && typeof Chart !== 'undefined') {
-        //     // Chart initialization would happen after data is fetched, or be updated in updateUIWithReportData
-        // }
+        // Initial data load for the default active filter (Tháng này)
+        const initialFilterButton = document.querySelector('.btn-quick-filter.active') || quickFilterButtons[0];
+        if (initialFilterButton) {
+             const initialRangeType = initialFilterButton.dataset.range;
+             const { dateFrom, dateTo, monthName } = getDateRangeForFilter(initialRangeType);
+             fetchReportData(dateFrom, dateTo, monthName);
+             fetchAndRenderDailyTrendChart(dateFrom,dateTo);
+             fetchExpenseDetails(dateFrom,dateTo);
+        } else { // Fallback if no active button somehow
+            const { dateFrom, dateTo, monthName } = getDateRangeForFilter('this-month');
+            fetchReportData(dateFrom, dateTo, monthName);
+            fetchAndRenderDailyTrendChart(dateFrom,dateTo);
+            fetchExpenseDetails(dateFrom,dateTo);
+        }
     });
 
     /*]]>*/
-</script>
+    </script>
 </body>
 </html>

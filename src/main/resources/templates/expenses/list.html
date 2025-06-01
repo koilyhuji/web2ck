@@ -480,7 +480,7 @@
                         <td th:text="${#dates.format(expenseDTO.expenseDate, 'dd MMM yyyy')}">01 Jan 2023</td>
                         <td th:text="${expenseDTO.description}">Lunch with colleagues</td>
                         <td><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill px-2 py-1" th:text="${expenseDTO.categoryName ?: 'N/A'}">Food</span></td>
-                        <td th:text="${expenseDTO.notes}">Không</td>
+                        <td th:text="${expenseDTO.notes ?: ' '}">Không</td>
                         <td class="amount-column" th:text="${expenseDTO.formattedAmount}">150.000 ₫</td>
                         <td class="actions text-center">
                             <button class="edit-expense-btn" data-bs-toggle="modal" data-bs-target="#addExpenseModal"
@@ -531,6 +531,16 @@
                     <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <input type="hidden" id="expenseId" name="id" >
                     <div class="mb-3">
+                        <label for="expenseCategory" class="form-label">Danh mục</label>
+                        <select class="form-select" id="expenseCategory" name="category" required>
+                            <option value="">-- Chọn danh mục --</option>
+                            <option th:each="category : ${allCategories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}"
+                                    th:selected="${category.id == 2}">Category Name</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="expenseDescription" class="form-label">Mô tả <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="expenseDescription" name="description" required>
                     </div>
@@ -546,16 +556,7 @@
                         <label for="expenseNote" class="form-label">ghi chú </label>
                         <textarea type="textarea" class="form-control" id="expenseNote" name="notes"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="expenseCategory" class="form-label">Danh mục</label>
-                        <select class="form-select" id="expenseCategory" name="category" required>
-                            <option value="">-- Chọn danh mục --</option>
-                            <option th:each="category : ${allCategories}"
-                                    th:value="${category.id}"
-                                    th:text="${category.name}"
-                                    th:selected="${category.id == 2}">Category Name</option>
-                        </select>
-                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -690,7 +691,7 @@
                 amount: button.dataset.amount,
                 date: button.dataset.date,
                 categoryid: button.dataset.categoryid,
-                note: button.dataset.note
+                note: button.dataset.note == undefined ? '' : button.dataset.note
             };
             prepareModalForEdit(expenseData);
         } 
