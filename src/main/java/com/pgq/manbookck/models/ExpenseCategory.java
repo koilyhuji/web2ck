@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -42,6 +45,8 @@ public class ExpenseCategory {
     // this side doesn't need a collection of expenses.
     // If you wanted bidirectional:
     @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
     private Set<Expense> expenses = new HashSet<>();
 
     public ExpenseCategory(String name, String description) {

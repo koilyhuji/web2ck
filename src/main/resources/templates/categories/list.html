@@ -245,7 +245,7 @@
             flex-direction: row;
         }
         .floating-navbar .nav-item {
-            margin: 0 0.25rem;
+            margin: 0 1.5rem;
         }
         .floating-navbar .nav-link {
             padding: 0.5rem 0.75rem;
@@ -274,6 +274,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/categories}"> <!-- Active -->
                             <i class="fas fa-tags"></i> Danh mục
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" th:href="@{/report}"> <!-- Active -->
+                            <i class="fas fa-chart-pie"></i> Thống kê
                         </a>
                     </li>
                 </ul>
@@ -310,6 +315,7 @@
                         <tr>
                             <th>Tên Danh mục</th>
                             <th>Mô tả</th>
+                            <th>Hạn mức cho tháng</th>
                             <th class="text-center">Hành động</th>
                         </tr>
                     </thead>
@@ -317,12 +323,14 @@
                         <tr th:each="category : ${categories}">
                             <td th:text="${category.name}">Ăn uống</td>
                             <td th:text="${category.description ?: '-'}">Chi tiêu cho thực phẩm, nhà hàng</td>
+                            <td th:text="${#numbers.formatInteger(category.budgetAmount, 1, 'COMMA')}"></td>
                             <td class="actions text-center">
                                 <button type="button" class="edit-category-btn"
                                    data-bs-toggle="modal" data-bs-target="#addCategoryModal"
                                    th:data-id="${category.id}"
                                    th:data-name="${category.name}"
                                    th:data-description="${category.description ?: ''}"
+                                   th:data-budgetAmount="${category.budgetAmount ?: ''}"
                                    title="Chỉnh sửa">
                                     <i class="fas fa-edit"></i>
                                 </button>
@@ -359,6 +367,10 @@
                             <input type="text" class="form-control" id="categoryName" name="name" required maxlength="100">
                         </div>
                         <div class="mb-3">
+                            <label for="categoryBudget" class="form-label">Hạn mức chi tiêu </label>
+                            <input type="number" class="form-control" id="categoryBudget" name="budgetAmount" min="0" step="1000">
+                        </div>
+                        <div class="mb-3">
                             <label for="categoryDescription" class="form-label">Mô tả</label>
                             <textarea class="form-control" id="categoryDescription" name="description" rows="3" maxlength="255"></textarea>
                         </div>
@@ -379,6 +391,7 @@
         const categoryForm = document.getElementById('addCategoryForm');
         const categoryIdField = document.getElementById('categoryId');
         const categoryNameField = document.getElementById('categoryName');
+        const categoryBudgetField = document.getElementById('categoryBudget');
         const categoryDescriptionField = document.getElementById('categoryDescription');
         const modalCategoryAlertPlaceholder = document.getElementById('modalCategoryAlertPlaceholder');
         const addCategoryModalLabel = document.getElementById('addCategoryModalLabel');
@@ -433,13 +446,11 @@
                 addCategoryModalLabel.textContent = 'Chỉnh sửa Danh mục';
                 modalCategoryAlertPlaceholder.innerHTML = '';
 
-                const id = this.dataset.id;
-                const name = this.dataset.name;
-                const description = this.dataset.description;
-
-                categoryIdField.value = id;
-                categoryNameField.value = name;
-                categoryDescriptionField.value = description;
+            
+                categoryIdField.value = this.dataset.id;
+                categoryNameField.value = this.dataset.name;
+                categoryDescriptionField.value = this.dataset.description;
+                categoryBudgetField.value = this.dataset.budgetAmount;
                 // categoryForm.action = `/categories/update/${id}`; // Or keep same save endpoint and handle ID
             });
         });
