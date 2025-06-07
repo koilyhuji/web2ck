@@ -43,7 +43,6 @@ public class ApiController {
         this.categoryService = categoryService;
     }
 
-    // 1. Basic filtered expense list 
     @GetMapping("/expenses")
     public ResponseEntity<List<Expense>> getFilteredExpenses(
             @RequestParam(name = "search", required = false) String search,
@@ -56,7 +55,6 @@ public class ApiController {
         return ResponseEntity.ok(expenses);
     }
 
-    // 2. Daily totals for a date range (for charts)
     @GetMapping("/expenses/daily-totals")
     public ResponseEntity<List<DailyTotalDTO>> getDailyTotals(
             @RequestParam(name = "dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,

@@ -112,8 +112,6 @@ public class ExpenseController {
         model.addAttribute("allCategories", categoryService.findAll());
     }
 
-    
-
     @PostMapping("/save")
     public String saveExpense(@ModelAttribute("expense") Expense expense,
                             BindingResult result, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {

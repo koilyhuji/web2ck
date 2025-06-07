@@ -11,12 +11,9 @@ import com.pgq.manbookck.services.ExpenseCategoryService;
 @Controller
 @RequestMapping("/report")
 public class ReportController {
-    
-
     @GetMapping
     public String showReport(Model model) {
-        
-        return "report/index"; // -> src/main/resources/templates/report/index.html
+        return "report/index";
     }
 
 }
